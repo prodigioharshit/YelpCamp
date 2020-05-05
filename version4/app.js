@@ -30,7 +30,7 @@ app.get("/campgrounds",function(req,res){
             console.log(err);
         } 
         else{
-            res.render("index",{Campgrounds : allcampgrounds});
+            res.render("campgrounds/index",{Campgrounds : allcampgrounds});
         }
     });
     // res.render("camgrounds",{Campgrounds : campgrounds}); // typo its actually campgrounds
@@ -60,7 +60,7 @@ app.post("/campgrounds",function(req,res){
 
 //NEW
 app.get("/campgrounds/new",function(req,res){
-    res.render("new") //form page
+    res.render("campgrounds/new") //form page
 });
 
 //SHOW 
@@ -71,11 +71,24 @@ app.get("/campgrounds/:id",function(req,res){
         }
         else{
             console.log(foundCamp);
-            res.render("show",{campground : foundCamp});
+            res.render("campgrounds/show",{campground : foundCamp});
         }
     })
     //res.send("This will be show page one day");
 });
+
+
+//========================
+//    COMMENTS ROUTES
+//========================
+
+
+app.get("/campgrounds/:id/comments/new",function(req,res){
+    res.render("comments/new");
+});
+
+
+
 
 app.listen(3000,function(req,res){
     console.log("YelpCamp Server Started");
