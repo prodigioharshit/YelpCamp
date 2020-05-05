@@ -2,6 +2,7 @@ var express = require('express'),
       app    = express(),
     mongoose = require('mongoose'),
     Campground = require('./models/campgrounds.js'),
+    Comment = require('./models/comment.js');
         seedDB = require("./seeds");
 
 //seedDB();
@@ -84,9 +85,42 @@ app.get("/campgrounds/:id",function(req,res){
 
 
 app.get("/campgrounds/:id/comments/new",function(req,res){
-    res.render("comments/new");
+    //find campground by id then render new to send that campground
+    Campground.findById(req.params.id,function(err,campground){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render("comments/new",{campground:campground});
+        }
+    })
+    
 });
 
+app.post("/campgrounds/:id/comments",function(req,res){
+    //find id of campground
+    Campground.findById(req.params.id,function(err,campground){
+        if(err){
+            console.log(err);
+            res.redirect("/campgrounds");
+        }
+        else{
+            Comment.create(req.body.comment,function(err,comment){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect("/campgrounds/"+campground._id);
+                }
+            })
+        }
+    })
+    //create comment for that campground
+    //connect to comment model
+    //redirect to show page
+})
 
 
 
