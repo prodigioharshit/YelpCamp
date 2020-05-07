@@ -1,6 +1,9 @@
 var express = require('express'),
       app    = express(),
     mongoose = require('mongoose'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local'),
+    User   = require('./models/user'),
     Campground = require('./models/campgrounds.js'),
     Comment = require('./models/comment.js');
         seedDB = require("./seeds");
@@ -9,6 +12,7 @@ var express = require('express'),
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);
+mongoose.set('useCreateIndex', true);
 
 mongoose.connect("mongodb://localhost/Yelp");
 app.set("view engine","ejs");  
