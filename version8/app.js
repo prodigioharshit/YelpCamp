@@ -13,7 +13,7 @@ var commentRoutes       =  require('./routes/comments.js'),
     campgroundRoutes    =  require('./routes/campgrounds.js'),
     authRoutes          =  require('./routes/auth.js');       
 
-//seedDB();
+//seedDB(); //seed the database
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useUnifiedTopology', true);  
