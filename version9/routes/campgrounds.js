@@ -19,19 +19,26 @@ router.get("/",function(req,res){
 
  // REST convention .get and .post has same url
 //CREATE 
-router.post("/",function(req,res){
+router.post("/",isLoggedIn,function(req,res){
     var name = req.body.name ; //.name is variable from form
     var image = req.body.image; // .image is variable from form
     var description = req.body.description;// .description id variable from form
-    var newCampground = {name : name , image : image , description:description};//as an object
-      
+    var author = {
+              
+          id : req.user._id,
+          username : req.user.username
+    };
+    
+    var newCampground = {name : name , image : image , description:description , author:author};//as an object
+    
+    
      Campground.create(
         newCampground , function(err , newCreate){
             if(err){
                 console.log(err);
             }
             else{
-                 res.redirect("/campgrounds");//redirect back to campgrounds
+                res.redirect("/campgrounds");//redirect back to campgrounds
             }
         }
      )
@@ -40,7 +47,7 @@ router.post("/",function(req,res){
 });
 
 //NEW
-router.get("/new",function(req,res){
+router.get("/new",isLoggedIn,function(req,res){
     res.render("campgrounds/new") //form page
 });
 
@@ -58,4 +65,14 @@ router.get("/:id",function(req,res){
     //res.send("This will be show page one day");
 });
 
+//middleware isLoggedIn 
+function isLoggedIn(req , res , next){
+    if(req.isAuthenticated() == true){
+        return next();
+    }
+     res.redirect("/login");
+}
+
+
 module.exports = router; 
+
