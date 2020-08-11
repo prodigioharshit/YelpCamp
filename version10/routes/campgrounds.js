@@ -90,6 +90,18 @@ router.put("/:id",function(req,res){
    }); 
 });
 
+//DELETE (DESTROY)
+router.delete("/:id",function(req,res){
+    Campground.findByIdAndRemove(req.params.id,function(err){
+        if(err){
+            res.redirect("/campgrounds");
+        }
+        else{
+            res.redirect("/campgrounds")
+        }
+    });
+});
+
 
 //middleware isLoggedIn 
 function isLoggedIn(req , res , next){
