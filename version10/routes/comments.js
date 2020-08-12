@@ -50,7 +50,20 @@ router.post("/",isLoggedIn,function(req,res){
 
 //EDIT
 router.get("/:comment_id/edit",function(req,res){
-   res.send("Comment Edit route"); 
+    //req.params.id is id of campground not comment
+    Comment.findById(req.params.comment_id,function(err,foundComment){
+        if(err){
+            res.redirect("back");
+        }
+        else{
+               res.render("comments/edit",{campground_id:req.params.id, comment:foundComment});
+        }
+    })
+});
+
+//UPDATE
+router.put("/:comment_id",function(req,res){
+    res.send("Update route for comment");
 });
 
 //middleware isLoggedIn 
