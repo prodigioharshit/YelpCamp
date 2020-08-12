@@ -63,7 +63,14 @@ router.get("/:comment_id/edit",function(req,res){
 
 //UPDATE
 router.put("/:comment_id",function(req,res){
-    res.send("Update route for comment");
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err,updatedComment){
+       if(err){
+           res.redirect("back");
+       } 
+        else{
+            res.redirect("/campgrounds/"+req.params.id); // campgrounds id
+        }
+    });
 });
 
 //middleware isLoggedIn 
