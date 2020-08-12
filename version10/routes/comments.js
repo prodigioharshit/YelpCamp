@@ -68,7 +68,7 @@ router.put("/:comment_id",function(req,res){
            res.redirect("back");
        } 
         else{
-            res.redirect("/campgrounds/"+req.params.id); // campgrounds id
+            res.redirect("/campgrounds/"+req.params.id);a // campgrounds id
         }
     });
 });
