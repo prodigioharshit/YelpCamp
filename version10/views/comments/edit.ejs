@@ -7,7 +7,7 @@
         <form action="/campgrounds/<%= campground_id %>/comments/<%=comment._id %>?_method=PUT" method="POST">
             <div class="form-group">
                 <label for="Comment">Write A Comment..</label>
-                <input class="form-control" type="text" name="comment[text]" val="<%=comment.text %>">
+                <input class="form-control" type="text" name="comment[text]" value="<%=comment.text %>">
             </div>
           
             
