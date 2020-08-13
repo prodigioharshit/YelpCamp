@@ -3,10 +3,12 @@ var router  = express.Router({mergeParams:true});
 
 var Campground = require('../models/campgrounds.js');
 var Comment    = require('../models/comment.js');
+var middlewareObj = require("../middleware");
+
 
 
 //NEW route
-router.get("/new",isLoggedIn,function(req,res){
+router.get("/new",middlewareObj.isLoggedIn,function(req,res){
     //find campground by id then render new to send that campground
     Campground.findById(req.params.id,function(err,campground){
         if(err){
@@ -20,7 +22,7 @@ router.get("/new",isLoggedIn,function(req,res){
 });
 
 //CREATE route
-router.post("/",isLoggedIn,function(req,res){
+router.post("/",middlewareObj.isLoggedIn,function(req,res){
     //find id of campground
     Campground.findById(req.params.id,function(err,campground){
         if(err){
@@ -49,7 +51,7 @@ router.post("/",isLoggedIn,function(req,res){
 })
 
 //EDIT
-router.get("/:comment_id/edit",checkCommentOwnership,function(req,res){
+router.get("/:comment_id/edit",middlewareObj.checkCommentOwnership,function(req,res){
     //req.params.id is id of campground not comment
     Comment.findById(req.params.comment_id,function(err,foundComment){
         if(err){
@@ -62,7 +64,7 @@ router.get("/:comment_id/edit",checkCommentOwnership,function(req,res){
 });
 
 //UPDATE
-router.put("/:comment_id",checkCommentOwnership,function(req,res){
+router.put("/:comment_id",middlewareObj.checkCommentOwnership,function(req,res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err,updatedComment){
        if(err){
            res.redirect("back");
@@ -74,7 +76,7 @@ router.put("/:comment_id",checkCommentOwnership,function(req,res){
 });
 
 //DESTROY
-router.delete("/:comment_id",checkCommentOwnership,function(req,res){
+router.delete("/:comment_id",middlewareObj.checkCommentOwnership,function(req,res){
    // findByIdAndRemove()
     Comment.findByIdAndRemove(req.params.comment_id,function(err,deleteComment){
        if(err){
@@ -85,40 +87,6 @@ router.delete("/:comment_id",checkCommentOwnership,function(req,res){
        }
     });
 });
-
-//middleware isLoggedIn 
-function isLoggedIn(req , res , next){
-    if(req.isAuthenticated() == true){
-        return next();
-    }
-     res.redirect("/login");
-}
-
-//middleware checkCommentOwnership
-function checkCommentOwnership(req, res, next){
-    //is user logged in
-    if(req.isAuthenticated()){
-        Comment.findById(req.params.comment_id,function(err,foundComment){
-       if(err){
-           res.redirect("/campgrounds");
-       }
-       else{
-           //does user own comment
-           if(foundComment.author.id.equals(req.user._id)){
-              next();
-           }
-           else{
-               console.log("You do not have the permission")
-               res.redirect("back");
-           }
-       }
-   });
-  }
-    else{
-        console.log("Not logged in");
-        res.redirect("back");
-    }
-}
 
 
 
