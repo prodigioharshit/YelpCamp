@@ -2,6 +2,7 @@ var express         = require('express'),
     app             = express(),
     mongoose        = require('mongoose'), 
     bodyParser      = require('body-parser'),
+    flash           = require('connect-flash'),
     passport        = require('passport'),
     LocalStrategy   = require('passport-local'),
     methodOverride  = require('method-override'),
@@ -26,6 +27,7 @@ app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + "/public")) //__dirname gives path of current working directory
 app.use(methodOverride("_method")); // method override
+app.use(flash());
 
 //PASSPORT CONFIGURATION
     app.use(require('express-session')({
