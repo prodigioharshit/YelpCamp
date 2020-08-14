@@ -42,7 +42,7 @@ app.use(flash());
    passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next){
-    res.locals.currentUser = req.user; //passport will provide logged in info about acurrent user to every route.
+    res.locals.currentUser = req.user; //passport will provide logged in info about current user to every route.
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
     next();
