@@ -30,8 +30,9 @@ router.post("/",middlewareObj.isLoggedIn,function(req,res){
           id : req.user._id,
           username : req.user.username
     };
+    var price = req.body.price
     
-    var newCampground = {name : name , image : image , description:description , author:author};//as an object
+    var newCampground = {name : name ,price : price, image : image , description:description , author:author};//as an object
     
     
      Campground.create(
