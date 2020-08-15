@@ -54,15 +54,22 @@ router.post("/",middlewareObj.isLoggedIn,function(req,res){
 
 //EDIT
 router.get("/:comment_id/edit",middlewareObj.checkCommentOwnership,function(req,res){
-    //req.params.id is id of campground not comment
-    Comment.findById(req.params.comment_id,function(err,foundComment){
-        if(err){
-            res.redirect("back");
+    Campground.findById(req.params.id,function(err,foundCampground){
+        if(err || !foundCampground){
+            req.flash("error","Campground not find");
+            return res.redirect("back");
         }
-        else{
-               res.render("comments/edit",{campground_id:req.params.id, comment:foundComment});
-        }
-    })
+        //req.params.id is id of campground not comment
+         Comment.findById(req.params.comment_id,function(err,foundComment){
+            if(err){
+                res.redirect("back");
+            }
+            else{
+                res.render("comments/edit",{campground_id:req.params.id, comment:foundComment});
+            }
+        });
+    });
+    
 });
 
 //UPDATE
@@ -86,7 +93,7 @@ router.delete("/:comment_id",middlewareObj.checkCommentOwnership,function(req,re
        } 
        else{
            req.flash("success","Comment deleted");
-           res.redirect("/campgrounds/"+req.params.id);
+           res.redirect("/campgrounds/"+req.params.id)
        }
     });
 });
